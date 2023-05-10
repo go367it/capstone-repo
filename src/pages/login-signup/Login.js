@@ -7,6 +7,11 @@ import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import MessageContext from "../../context/MessageContext";
+import { useNavigate } from "react-router-dom";
+
+// firebase import 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../FirebaseApp";
 
 
 export default function Login() {
@@ -42,9 +47,26 @@ export default function Login() {
         setMessage("Please Type In Correct Field!");
     }
   };
-
+  const navigate = useNavigate();
   const handleSubmit = () => {
     if (filedChecking() == true) {
+
+      // user login
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential)=>{
+        console.log(userCredential)
+        setOpen(true);
+          setType("success");
+          setMessage("Login Successfull!");
+          navigate("/teacher/home");
+      })
+      .catch((error)=>{
+        setOpen(true);
+          setType("error");
+          setMessage(`${error.code}!`);
+        console.log(error.message, error.code)
+      })
+
     }
   };
 

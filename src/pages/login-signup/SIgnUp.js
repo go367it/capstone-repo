@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import MessageContext from "../../context/MessageContext";
+import { useNavigate } from "react-router-dom";
 
 // firebase import
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -56,9 +57,10 @@ const SIgnUp = () => {
         setMessage("Please Type In Correct Field!");
     }
   };
-
+  const navigate = useNavigate();
   // function for handling submit button
   const handleSubmit = () => {
+    
     if (filedChecking() == true) {
       // creating user
       createUserWithEmailAndPassword(auth, email, password)
@@ -67,9 +69,15 @@ const SIgnUp = () => {
           setOpen(true);
           setType("success");
           setMessage("User Registered!");
+          
+          
+          setTimeout(()=>{
+            navigate("/");
+          }, 3000)
         })
         .catch((error) => {
           
+          // displaying error message
           if(error.code == "auth/email-already-in-use"){
             setOpen(true);
             setType("error");

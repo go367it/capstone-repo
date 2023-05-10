@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -23,6 +24,11 @@ import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Outlet, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+// firebase import
+import { onAuthStateChanged } from "firebase/auth";
+import {auth} from '../../FirebaseApp'
 
 const drawerWidth = 240;
 
@@ -95,6 +101,19 @@ export default function TeacherDashboard() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [appBarName, setAppBarName] = React.useState("Home");
+
+  const navigate = useNavigate()
+  useEffect(()=>{
+    // checking if the user is logged in or not
+    onAuthStateChanged(auth, (user)=>{
+      if(user){
+
+      }
+      else{
+        navigate("/")
+      }
+    })
+  },[])
 
   const handleDrawerOpen = () => {
     setOpen(true);
