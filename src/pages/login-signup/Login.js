@@ -5,18 +5,48 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import MessageContext from "../../context/MessageContext";
 
+
 export default function Login() {
+  const { setOpen, setType, setMessage } = useContext(MessageContext);
+  const [email, setEmail] = useState(""); // state for email
+  const [password, setPassword] = useState(""); // state for password
 
-  const {setOpen, setType, setMessage} = useContext(MessageContext)
+  // function for checking fileds
+  const filedChecking = () => {
+    if (email === "" || password === "") {
+      setOpen(true);
+      setType("warning");
+      setMessage("Enter All The Fields!");
+      return false;
+    }
 
-  const handleSubmit = () =>{
-    setOpen(true)
-    setType('info')
-    setMessage('kjhvljvjlh')
-  }
+    return true;
+  };
+
+  // function for onchange event on each filed
+  const onChange = (e) => {
+    // setting the value for particular filed
+    switch (e.target.id) {
+      case "email":
+        setEmail(e.target.value);
+        break;
+      case "password":
+        setPassword(e.target.value);
+        break;
+      default:
+        setOpen(true);
+        setType("warning");
+        setMessage("Please Type In Correct Field!");
+    }
+  };
+
+  const handleSubmit = () => {
+    if (filedChecking() == true) {
+    }
+  };
 
   return (
     <Container sx={{ mt: 3 }} maxWidth="sm">
@@ -26,26 +56,29 @@ export default function Login() {
             <div className="d-flex justify-content-center">
               <h4>Login</h4>
             </div>
-            <div class="mt-3">
-              <label for="email" class="form-label">
+            <div className="mt-3">
+              <label for="email" className="form-label">
                 Email address
               </label>
               <input
+                value={email}
+                onChange={(e) => onChange(e)}
                 type="email"
-                class="form-control"
+                className="form-control"
                 id="email"
                 placeholder="name@example.com"
               />
             </div>
-            <div class="mt-3">
-              <label for="password" class="form-label">
+            <div className="mt-3">
+              <label for="password" className="form-label">
                 Password
               </label>
               <input
+                value={password}
+                onChange={(e) => onChange(e)}
                 type="password"
-                class="form-control"
+                className="form-control"
                 id="password"
-                // placeholder="name@example.com"
               />
             </div>
             <div className="mt-3 d-flex justify-content-center">
@@ -59,17 +92,15 @@ export default function Login() {
             </div>
 
             <div className="mt-3 d-flex justify-content-center">
-              
-                <Button
-                  onClick={()=> handleSubmit ()}
-                  variant="contained"
-                  disableElevation
-                  color="primary"
-                  size="medium"
-                >
-                  Login
-                </Button>
-              
+              <Button
+                onClick={() => handleSubmit()}
+                variant="contained"
+                disableElevation
+                color="primary"
+                size="medium"
+              >
+                Login
+              </Button>
             </div>
           </Stack>
         </CardContent>

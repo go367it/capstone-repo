@@ -8,6 +8,10 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import MessageContext from "../../context/MessageContext";
 
+// firebase import
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../FirebaseApp";
+
 const SIgnUp = () => {
   const { setOpen, setType, setMessage } = useContext(MessageContext);
   const [email, setEmail] = useState(""); // state for email
@@ -56,6 +60,40 @@ const SIgnUp = () => {
   // function for handling submit button
   const handleSubmit = () => {
     if (filedChecking() == true) {
+      // creating user
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log(userCredential);
+          setOpen(true);
+          setType("success");
+          setMessage("User Registered!");
+        })
+        .catch((error) => {
+          
+          if(error.code == "auth/email-already-in-use"){
+            setOpen(true);
+            setType("error");
+            setMessage("Email Already Exists!");
+          }
+          else if(error.code == "auth/invalid-email"){
+            setOpen(true);
+            setType("error");
+            setMessage("Invalid Email!");
+          }
+          else if(error.code == "auth/weak-password"){
+            setOpen(true);
+            setType("error");
+            setMessage("Weak Password!");
+          }
+          else{
+            setOpen(true);
+            setType("error");
+            setMessage(`${error.code}`);
+          }
+          
+          console.log(error.message, error.code);
+          console.log(error);
+        });
     }
   };
 
@@ -67,40 +105,40 @@ const SIgnUp = () => {
             <div className="d-flex justify-content-center">
               <h4>Sign Up</h4>
             </div>
-            <div class="mt-3">
-              <label for="email" class="form-label">
+            <div className="mt-3">
+              <label for="email" className="form-label">
                 Email address
               </label>
               <input
                 value={email}
                 onChange={(e) => onChange(e)}
                 type="email"
-                class="form-control"
+                className="form-control"
                 id="email"
                 placeholder="name@example.com"
               />
             </div>
-            <div class="mt-3">
-              <label for="password" class="form-label">
+            <div className="mt-3">
+              <label for="password" className="form-label">
                 Password
               </label>
               <input
                 value={password}
                 onChange={(e) => onChange(e)}
                 type="password"
-                class="form-control"
+                className="form-control"
                 id="password"
               />
             </div>
-            <div class="mt-3">
-              <label for="confirm-password" class="form-label">
+            <div className="mt-3">
+              <label for="confirm-password" className="form-label">
                 Confirm Password
               </label>
               <input
                 value={confirmPassword}
                 onChange={(e) => onChange(e)}
                 type="password"
-                class="form-control"
+                className="form-control"
                 id="confirm-password"
               />
             </div>
