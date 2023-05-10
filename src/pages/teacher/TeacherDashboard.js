@@ -140,13 +140,13 @@ export default function TeacherDashboard() {
         <Divider />
         <List>
           <Link style={{ textDecoration: "none", color: "black" }} to="home">
-            <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItem disablePadding sx={{ display: "block", padding:'10px' }}>
               <ListItemButton
                 onClick={() => setAppBarName("Home")}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
-                  px: 2.5,
+                 
                 }}
               >
                 <ListItemIcon

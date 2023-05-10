@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import CreateButton from "./createButton";
 
 const CreateTests = () => {
   return (
     <div>
-      create tests
+      <CreateButton />
     </div>
-  )
-}
+  );
+};
 
-export default CreateTests
+export default CreateTests;
