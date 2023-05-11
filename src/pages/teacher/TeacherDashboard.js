@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useContext, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -25,9 +25,10 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Outlet, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import MessageContext from "../../context/MessageContext";
 
 // firebase import
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import {auth} from '../../FirebaseApp'
 
 const drawerWidth = 240;
@@ -99,8 +100,9 @@ const Drawer = styled(MuiDrawer, {
 
 export default function TeacherDashboard() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open1, setOpen1] = React.useState(true);
   const [appBarName, setAppBarName] = React.useState("Home");
+  const { setOpen, setType, setMessage } = useContext(MessageContext);
 
   const navigate = useNavigate()
   useEffect(()=>{
@@ -116,17 +118,32 @@ export default function TeacherDashboard() {
   },[])
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpen1(true);
   };
 
+  // to handle the logout function
+  const handleLogout = () =>{
+    signOut(auth)
+    .then(()=>{
+      setOpen(true)
+      setType('info')
+      setMessage('Logged Out!')
+    })
+    .catch((error)=>{
+      setOpen(true)
+      setType('error')
+      setMessage(`${error.code}`)
+    })
+  }
+
   const handleDrawerClose = () => {
-    setOpen(false);
+    setOpen1(false);
   };
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open1}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -135,7 +152,7 @@ export default function TeacherDashboard() {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: "none" }),
+              ...(open1 && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -145,7 +162,7 @@ export default function TeacherDashboard() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open1}>
         <DrawerHeader sx={{ textAlign: "left" }}>
           <Typography sx={{ textAlign: "left"}}>Quiztap</Typography>
           <IconButton onClick={handleDrawerClose}>
@@ -164,20 +181,20 @@ export default function TeacherDashboard() {
                 onClick={() => setAppBarName("Home")}
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: open1 ? "initial" : "center",
                  
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: open1 ? 3 : "auto",
                     justifyContent: "center",
                   }}
                 >
                   <HomeIcon />
                 </ListItemIcon>
-                <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Home" sx={{ opacity: open1 ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           </Link>
@@ -187,20 +204,20 @@ export default function TeacherDashboard() {
                 onClick={() => setAppBarName("Tests")}
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: open1 ? "initial" : "center",
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: open1 ? 3 : "auto",
                     justifyContent: "center",
                   }}
                 >
                   <HistoryEduIcon />
                 </ListItemIcon>
-                <ListItemText primary="Tests" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Tests" sx={{ opacity: open1 ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           </Link>
@@ -210,20 +227,20 @@ export default function TeacherDashboard() {
                 onClick={() => setAppBarName("Create")}
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: open1 ? "initial" : "center",
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: open1 ? 3 : "auto",
                     justifyContent: "center",
                   }}
                 >
                   <CreateIcon />
                 </ListItemIcon>
-                <ListItemText primary="Create" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Create" sx={{ opacity: open1 ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           </Link>
@@ -236,14 +253,14 @@ export default function TeacherDashboard() {
                 onClick={() => setAppBarName("Security")}
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: open1 ? "initial" : "center",
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: open1 ? 3 : "auto",
                     justifyContent: "center",
                   }}
                 >
@@ -251,7 +268,7 @@ export default function TeacherDashboard() {
                 </ListItemIcon>
                 <ListItemText
                   primary="Security"
-                  sx={{ opacity: open ? 1 : 0 }}
+                  sx={{ opacity: open1 ? 1 : 0 }}
                 />
               </ListItemButton>
             </ListItem>
@@ -262,14 +279,14 @@ export default function TeacherDashboard() {
                 onClick={() => setAppBarName("Account")}
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: open1 ? "initial" : "center",
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: open1 ? 3 : "auto",
                     justifyContent: "center",
                   }}
                 >
@@ -277,29 +294,30 @@ export default function TeacherDashboard() {
                 </ListItemIcon>
                 <ListItemText
                   primary="Account"
-                  sx={{ opacity: open ? 1 : 0 }}
+                  sx={{ opacity: open1 ? 1 : 0 }}
                 />
               </ListItemButton>
             </ListItem>
           </Link>
           <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
+            onClick={()=> handleLogout()}
               sx={{
                 minHeight: 48,
-                justifyContent: open ? "initial" : "center",
+                justifyContent: open1 ? "initial" : "center",
                 px: 2.5,
               }}
             >
               <ListItemIcon
                 sx={{
                   minWidth: 0,
-                  mr: open ? 3 : "auto",
+                  mr: open1 ? 3 : "auto",
                   justifyContent: "center",
                 }}
               >
                 <LogoutIcon />
               </ListItemIcon>
-              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Logout" sx={{ opacity: open1 ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
         </List>
