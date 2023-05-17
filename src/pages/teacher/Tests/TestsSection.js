@@ -75,30 +75,35 @@ const TestsSection = () => {
     getDocs(collection(db, "quizzes"))
       .then((response) => {
         console.log(response.docs);
-        console.log(
-          response.docs[0]._document.data.value.mapValue.fields.Title
-            .stringValue
-        );
+        // console.log(
+        //   response.docs[0]._document.data.value.mapValue.fields.Title
+        //     .stringValue
+        // );
         let arr = []; // for storing temp data
 
-        response.docs.forEach((element) => {
-          let jsonData = {
-            id: element.id,
-            Title:
-              element._document.data.value.mapValue.fields.Title.stringValue,
-            Type: element._document.data.value.mapValue.fields.Type.stringValue,
-            openTime:
-              element._document.data.value.mapValue.fields.openTime.stringValue,
-            closeTime:
-              element._document.data.value.mapValue.fields.closeTime
+        if (response.docs.length > 0) {
+          response.docs.forEach((element) => {
+            let jsonData = {
+              id: element.id,
+              Title:
+                element._document.data.value.mapValue.fields.Title.stringValue,
+              Type: element._document.data.value.mapValue.fields.Type
                 .stringValue,
-            TimeLimit:
-              element._document.data.value.mapValue.fields.TimeLimit
-                .stringValue,
-          };
-          console.log(jsonData);
-          arr.push(jsonData);
-        });
+              openTime:
+                element._document.data.value.mapValue.fields.openTime
+                  .stringValue,
+              closeTime:
+                element._document.data.value.mapValue.fields.closeTime
+                  .stringValue,
+              TimeLimit:
+                element._document.data.value.mapValue.fields.TimeLimit
+                  .stringValue,
+            };
+            console.log(jsonData);
+            arr.push(jsonData);
+          });
+        }
+        
 
         setQuizList(arr);
         setLoading(false);
@@ -124,9 +129,10 @@ const TestsSection = () => {
                   <Zoom>
                     <div
                       key={ele.id}
-                      className="md:flex justify-between px-3 py-4 border border-gray-200 
-                      bg-gray-50 rounded-lg hover:bg-indigo-200 hover:text-indigo-700 transform 
-                      duration-300"
+                      className="md:flex mt-5 justify-between px-3 py-4 border border-gray-200 
+                      bg-gray-50 rounded-lg hover:bg-indigo-200 hover:border-0 
+                      hover:text-indigo-700 transform 
+                       duration-300"
                     >
                       <div className="w-full">
                         <p className="text-xl font-semibold">{ele.Title}</p>

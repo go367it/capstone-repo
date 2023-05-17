@@ -144,6 +144,7 @@ export default function TeacherDashboard() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open1}>
+        <div className="bg-indigo-500">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -161,6 +162,7 @@ export default function TeacherDashboard() {
             {appBarName}
           </Typography>
         </Toolbar>
+        </div>
       </AppBar>
       <Drawer variant="permanent" open={open1}>
         <DrawerHeader sx={{ textAlign: "left" }}>
