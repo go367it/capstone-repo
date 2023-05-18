@@ -118,20 +118,32 @@ const TestSetter = () => {
 
   // function for submitting to the api
   const apiSubmit = () => {
-    addDoc(collection(db, "quizzes"), {
-      Title: title,
-      Type: qtype,
-      TimeLimit: timeLimit,
-      closeTime: closeTime,
-      openTime: openTime,
-      questions: questions,
-    })
-      .then((response) => {
-        console.log(response);
+    if (
+      title == "" ||
+      qtype == "" ||
+      timeLimit == "" ||
+      openTime == "" ||
+      closeTime == ""
+    ) {
+      setType("warning");
+      setMessage("Please Enter All The Fields!");
+      setOpen(true);
+    } else {
+      addDoc(collection(db, "quizzes"), {
+        Title: title,
+        Type: qtype,
+        TimeLimit: timeLimit,
+        closeTime: closeTime,
+        openTime: openTime,
+        questions: questions,
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -245,7 +257,7 @@ const TestSetter = () => {
               "
                     onClick={() => setModalOpen(!modalOpen)}
                   >
-                    Login
+                    Submit
                   </button>
                 ) : (
                   ""
