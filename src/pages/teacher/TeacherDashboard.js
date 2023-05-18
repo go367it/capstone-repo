@@ -109,7 +109,7 @@ export default function TeacherDashboard() {
     // checking if the user is logged in or not
     onAuthStateChanged(auth, (user)=>{
       if(user){
-        console.log(user)
+        // console.log(user)
       }
       else{
         navigate("/")
