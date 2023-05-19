@@ -237,7 +237,7 @@ const TestsSection = () => {
                                           </div>
                                           {
                                             disableAnswer? 
-                                            <div className="flex place-items-center space-x-2 mb-3">
+                                            <div className="flex bg-green-300 rounded-lg p-4 place-items-center space-x-2 mb-3">
                                             <p className="text-md font-semibold">Answer:</p>
                                             <p>{e.mapValue.fields.answer.stringValue}</p>
                                           </div>

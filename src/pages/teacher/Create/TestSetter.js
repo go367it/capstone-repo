@@ -9,12 +9,12 @@ import {
 } from "@mui/material";
 import MessageContext from "../../../context/MessageContext";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../../FirebaseApp";
+import { useNavigate } from "react-router-dom";
+
 
 const TestSetter = () => {
   const { setOpen, setType, setMessage } = useContext(MessageContext);
@@ -34,6 +34,7 @@ const TestSetter = () => {
   const [timeLimit, setTimeLimit] = useState("");
   const [openTime, setOpenTime] = useState("");
   const [closeTime, setCloseTime] = useState("");
+  const navigate = useNavigate();
 
   // on input change by user
   const onChange = (e) => {
@@ -139,6 +140,12 @@ const TestSetter = () => {
       })
         .then((response) => {
           console.log(response);
+          setType("success")
+          setMessage("Test Created!")
+          setOpen(true)
+          setTimeout(()=>{
+            navigate('/teacher/tests')
+          }, 3000)
         })
         .catch((error) => {
           console.log(error);
